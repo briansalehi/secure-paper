@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sstream>
 #include <fstream>
 #include <iostream>
 #include <filesystem>
@@ -12,15 +13,10 @@ class file_storage: public storage
 {
 public:
     explicit file_storage(std::filesystem::path const& storage_path);
-
-    virtual ~file_storage();
-
-    void write(unsigned int position) override;
-
-    void record(credentials const& secrets);
+    void write(printing_type type, unsigned int position) override;
 
 private:
     std::filesystem::path storage_path;
-    std::ofstream storage_file;
+    std::ostringstream buffer;
 };
 } // sp

@@ -1,16 +1,18 @@
 #pragma once
 
 #include <array>
+#include <iostream>
 
 #include <credentials.hpp>
 
 namespace sp
 {
-enum class storage_type { file };
-
 class storage
 {
 public:
+    enum class storage_type { file, network };
+    enum class printing_type { write, wipe };
+
     inline static std::array<char const*, 1> available_storage_types()
     {
         std::array<char const*, 1> types;
@@ -18,7 +20,9 @@ public:
         return types;
     }
 
-    virtual void write(unsigned int position) = 0;
+    void request_credentials();
+
+    virtual void write(printing_type, unsigned int) = 0;
 
 protected:
     credentials keys;

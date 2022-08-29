@@ -27,6 +27,7 @@ void file_storage::write(printing_type type, unsigned int position)
     switch (type)
     {
         case printing_type::write:
+        {
             if (request_credentials())
             {
                 write_start();
@@ -34,15 +35,16 @@ void file_storage::write(printing_type type, unsigned int position)
                 write_credentials(position);
                 write_end();
             }
-            break;
+        }
+        break;
         case printing_type::wipe:
-            {
-                write_start();
-                write_vertical_space(position);
-                write_block();
-                write_end();
-            }
-            break;
+        {
+            write_start();
+            write_vertical_space(position);
+            write_block();
+            write_end();
+        }
+        break;
     }
 }
 
@@ -55,6 +57,7 @@ void file_storage::write_batch(unsigned int position)
     {
         write_credentials(position++);
         clear();
+        std::cout << "\n";
     }
 
     write_end();

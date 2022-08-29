@@ -27,6 +27,7 @@ struct options
     storage::storage_type storage_type;
     std::string program_name;
     std::string output;
+    bool batch_mode;
     int position;
 };
 } // namespace sp

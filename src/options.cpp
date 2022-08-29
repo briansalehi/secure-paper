@@ -6,20 +6,22 @@ options::options(int argc, char **argv)
     : command_line_parser(argc, argv),
     general_options("General Options"),
     printing_options("Printing Options"),
-    program_name{argv[0]}
+    program_name{argv[0]},
+    batch_mode{false}
 {
     general_options.add_options()
         ("help,h", "show this help menu")
         ("list,l", "list of available storage types");
 
     printing_options.add_options()
+        ("batch,b", "batch mode, write multiple credentials")
         ("position,p", po::value<int>()->default_value(1),
              "position of passphrase on paper")
         ("output,o", po::value<std::string>(),
              "output to be written into")
         ("storage-type,t", po::value<std::string>()->default_value("file"),
              "storage type, use -l to see list")
-        ("wipe,w", po::value<int>(), "wipe specified line");
+        ("wipe,w", "wipe specified line");
 
     positional_options.add("output", 1);
     all_options.add(general_options).add(printing_options);
@@ -64,20 +66,22 @@ bool options::ready()
         output = variables_map["output"].as<std::string>();
     }
 
-    if (variables_map.count("position") && variables_map.count("wipe"))
-    {
-        throw po::error("position and wipe options have conflict\n");
-    }
-    else if (variables_map.count("position"))
+    if (variables_map.count("position"))
     {
         position = variables_map["position"].as<int>();
         printing_type = storage::printing_type::write;
         operational = true;
     }
-    else if (variables_map.count("wipe"))
+
+    if (variables_map.count("wipe"))
     {
-        position = variables_map["wipe"].as<int>();
         printing_type = storage::printing_type::wipe;
+        operational = true;
+    }
+
+    if (variables_map.count("batch"))
+    {
+        batch_mode = true;
         operational = true;
     }
 

@@ -20,7 +20,8 @@ public:
         return types;
     }
 
-    void request_credentials();
+    bool request_credentials();
+    void clear();
 
     virtual void write(printing_type, unsigned int) = 0;
 

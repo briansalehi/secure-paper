@@ -29,4 +29,5 @@ catch (boost::program_options::error const& exp)
 catch (std::exception const& exp)
 {
     std::cerr << exp.what() << std::endl;
+    return 1;
 }

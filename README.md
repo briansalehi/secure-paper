@@ -10,12 +10,11 @@ can be used to add new passphrases.
 Following packages are required in order to make this script
 work:
 
-* make
-* cmake
-* gcc
-* texlive-most
-* gpg
-* evince (any other pdf reader is also fine)
+### Arch Linux
+
+```sh
+pacman -S make cmake gcc g++ gpg evince texlive-most
+```
 
 ## Setup
 

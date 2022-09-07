@@ -10,7 +10,7 @@ namespace sp
 class storage
 {
 public:
-    enum class storage_type { file, network };
+    enum class storage_type { file, network, unknown };
     enum class printing_type { write, wipe };
 
     inline static std::array<char const*, 1> available_storage_types()

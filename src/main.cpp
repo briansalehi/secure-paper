@@ -24,6 +24,8 @@ try
         case sp::storage::storage_type::network:
             throw std::invalid_argument("network type not implemented yet");
             break;
+        default:
+            throw std::invalid_argument("invalid storage type");
     }
 }
 catch (boost::program_options::error const& exp)

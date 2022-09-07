@@ -4,10 +4,12 @@ using namespace sp;
 
 file_storage::file_storage(std::filesystem::path const& storage_path, unsigned int const index)
     : storage_path{storage_path},
-    storage_file{storage_path, std::ios::out|std::ios::trunc},
     line_spacing{12},
     buffer{}
 {
+    this->storage_path.replace_extension("tex");
+    storage_file.open(this->storage_path, std::ios::out|std::ios::trunc);
+
     if (!storage_file.is_open())
         std::runtime_error("storage file could not open");
 
@@ -57,7 +59,7 @@ void file_storage::write_batch(unsigned int position)
 
 void file_storage::write_vertical_space(unsigned int index)
 {
-    unsigned int position = index * line_spacing * 1.5;
+    unsigned int position = --index * line_spacing * 1.5;
 
     if (index > 0)
         buffer << "\n" << std::string(8, ' ') << R"(\vspace*{)" << position << "pt}\n";
@@ -100,7 +102,7 @@ void file_storage::write_end()
 
 void file_storage::wipe_line()
 {
-    buffer << "\t\t" << R"(\leavevmode\xleaders\hbox{█}\hfill\kern0pt )" << "\n";
+    buffer << "\n" << std::string(8, ' ') << R"(\leavevmode\xleaders\hbox{█}\hfill\kern0pt )";
 }
 
 void file_storage::write_credentials(unsigned int index)

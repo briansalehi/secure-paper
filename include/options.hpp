@@ -21,8 +21,8 @@ public:
     storage::storage_type storage_type;
     std::string program_name;
     std::string output;
-    bool batch_mode;
     unsigned int position;
+    bool batch_mode;
 
 private:
     po::positional_options_description positional_options;

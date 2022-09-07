@@ -21,7 +21,7 @@ public:
 private:
     void write_vertical_space(unsigned int);
     void write_credentials(unsigned int);
-    void write_start(unsigned int);
+    void write_start(bool const);
     void write_end();
     void wipe_line();
 

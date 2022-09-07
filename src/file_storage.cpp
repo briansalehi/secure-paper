@@ -13,7 +13,9 @@ file_storage::file_storage(std::filesystem::path const& storage_path, unsigned i
     if (!storage_file.is_open())
         std::runtime_error("storage file could not open");
 
-    write_start(index);
+    bool page_numbering = index == 1 ? true : false;
+
+    write_start(page_numbering);
     write_vertical_space(index);
 }
 
@@ -65,7 +67,7 @@ void file_storage::write_vertical_space(unsigned int index)
         buffer << "\n" << std::string(8, ' ') << R"(\vspace*{)" << position << "pt}\n";
 }
 
-void file_storage::write_start(unsigned int index)
+void file_storage::write_start(bool const page_numbering)
 {
     buffer << R"(\documentclass[a4paper,oneside,)";
     buffer << line_spacing << R"(pt]{article})" << "\n";
@@ -85,7 +87,9 @@ void file_storage::write_start(unsigned int index)
 
 \begin{document})";
 
-    if (index > 1)
+    if (page_numbering)
+        buffer << "\n" << std::string(4, ' ') << R"(\pagenumbering{arabic})";
+    else
         buffer << "\n" << std::string(4, ' ') << R"(\pagenumbering{gobble})";
 
     buffer << R"(
@@ -107,7 +111,7 @@ void file_storage::wipe_line()
 
 void file_storage::write_credentials(unsigned int index)
 {
-    buffer << std::string(8, ' ') << R"(\passphrase)";
+    buffer << "\n" <<  std::string(8, ' ') << R"(\passphrase)";
     buffer << "{" << index << ". " << keys.username << "@" << keys.domain << "}";
-    buffer << "{" << keys.passphrase << "}";
+    buffer << "{" << keys.passphrase << R"(}\\)";
 }

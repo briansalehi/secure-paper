@@ -8,18 +8,18 @@ void write_to_storage(sp::storage&);
 int main(int argc, char **argv)
 try
 {
-    sp::options options(argc, argv);
+    sp::options args(argc, argv);
 
-    if (!options.ready())
+    if (!args.ready())
         return 0;
 
-    switch (options.storage_type)
+    switch (args.storage_type)
     {
         case sp::storage::storage_type::file:
-            if (sp::file_storage file_storage(options.output); options.batch_mode)
-                file_storage.write_batch(options.position);
+            if (sp::file_storage storage{args.output, args.position}; args.batch_mode)
+                storage.write_batch(args.position);
             else
-                file_storage.write(options.printing_type, options.position);
+                storage.write(args.printing_type, args.position);
             break;
         case sp::storage::storage_type::network:
             throw std::invalid_argument("network type not implemented yet");

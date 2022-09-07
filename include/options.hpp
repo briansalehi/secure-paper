@@ -28,6 +28,6 @@ struct options
     std::string program_name;
     std::string output;
     bool batch_mode;
-    int position;
+    unsigned int position;
 };
 } // namespace sp

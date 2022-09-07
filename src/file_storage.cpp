@@ -2,18 +2,23 @@
 
 using namespace sp;
 
-file_storage::file_storage(std::filesystem::path const& storage_path)
+file_storage::file_storage(std::filesystem::path const& storage_path, unsigned int const index)
     : storage_path{storage_path},
     storage_file{storage_path, std::ios::out|std::ios::trunc},
-    line_height{12},
+    line_spacing{12},
     buffer{}
 {
     if (!storage_file.is_open())
         std::runtime_error("storage file could not open");
+
+    write_start(index);
+    write_vertical_space(index);
 }
 
 file_storage::~file_storage()
 {
+    write_end();
+
     if (storage_path.empty())
         std::cout << buffer.str();
     else
@@ -29,20 +34,12 @@ void file_storage::write(printing_type type, unsigned int position)
         case printing_type::write:
         {
             if (request_credentials())
-            {
-                write_start();
-                write_vertical_space(position);
                 write_credentials(position);
-                write_end();
-            }
         }
         break;
         case printing_type::wipe:
         {
-            write_start();
-            write_vertical_space(position);
-            write_block();
-            write_end();
+            wipe_line();
         }
         break;
     }
@@ -50,53 +47,65 @@ void file_storage::write(printing_type type, unsigned int position)
 
 void file_storage::write_batch(unsigned int position)
 {
-    write_start();
-    write_vertical_space(position);
-
     while (request_credentials())
     {
         write_credentials(position++);
         clear();
         std::cout << "\n";
     }
-
-    write_end();
 }
 
 void file_storage::write_vertical_space(unsigned int index)
 {
-    if (--index > 0)
-        buffer << R"(\vspace*{)" << index * line_height << "pt}\n";
+    unsigned int position = index * line_spacing * 1.5;
+
+    if (index > 0)
+        buffer << "\n" << std::string(8, ' ') << R"(\vspace*{)" << position << "pt}\n";
 }
 
-void file_storage::write_start()
+void file_storage::write_start(unsigned int index)
 {
     buffer << R"(\documentclass[a4paper,oneside,)";
-    buffer << line_height << R"(pt]{article})" << "\n";
-    buffer << R"(\usepackage[utf8]{inputenc})" << "\n";
-    buffer << R"(\begin{document})" << "\n";
-    buffer << R"(\noindent)" << "\n";
-    buffer << R"(\begin{flushleft})" << "\n";
+    buffer << line_spacing << R"(pt]{article})" << "\n";
+    buffer << R"(
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage{xparse}
+\onehalfspacing
+
+\newcommand{\dashfill}{%
+    \leavevmode\xleaders\hbox{-}\hfill\kern0pt
+}
+
+\NewDocumentCommand{\passphrase}{mv}{%
+    \texttt{#1}~\dashfill~\texttt{#2}%
+}
+
+\begin{document})";
+
+    if (index > 1)
+        buffer << "\n" << std::string(4, ' ') << R"(\pagenumbering{gobble})";
+
+    buffer << R"(
+    \noindent
+    \begin{flushleft})";
 }
 
 void file_storage::write_end()
 {
-    buffer << R"(\end{flushleft})" << "\n";
-    buffer << R"(\end{document})" << "\n";
+    buffer << R"(
+    \end{flushleft}
+\end{document})" << std::endl;
 }
 
-void file_storage::write_block()
+void file_storage::wipe_line()
 {
-    buffer << R"(\leavevmode\xleaders\hbox{█}\hfill\kern0pt )" << "\n";
+    buffer << "\t\t" << R"(\leavevmode\xleaders\hbox{█}\hfill\kern0pt )" << "\n";
 }
 
 void file_storage::write_credentials(unsigned int index)
 {
-    buffer << R"(\expandafter\string\csname )";
-    buffer << index << ". " << keys.username << "@" << keys.domain;
-    buffer << R"( \endcsname)" << "\n";
-    buffer << R"(\leavevmode\xleaders\hbox{-}\hfill\kern0pt )" << "\n";
-    buffer << R"(\expandafter\string\csname )";
-    buffer << keys.passphrase;
-    buffer << R"( \endcsname\\)" << "\n";
+    buffer << std::string(8, ' ') << R"(\passphrase)";
+    buffer << "{" << index << ". " << keys.username << "@" << keys.domain << "}";
+    buffer << "{" << keys.passphrase << "}";
 }

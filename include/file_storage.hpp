@@ -12,7 +12,7 @@ namespace sp
 class file_storage: public storage
 {
 public:
-    explicit file_storage(std::filesystem::path const& storage_path);
+    explicit file_storage(std::filesystem::path const&, unsigned int const);
     virtual ~file_storage();
 
     void write(printing_type, unsigned int) override;
@@ -21,14 +21,14 @@ public:
 private:
     void write_vertical_space(unsigned int);
     void write_credentials(unsigned int);
-    void write_start();
+    void write_start(unsigned int);
     void write_end();
-    void write_block();
+    void wipe_line();
 
 private:
     std::filesystem::path storage_path;
     std::ofstream storage_file;
     std::ostringstream buffer;
-    int line_height;
+    int line_spacing;
 };
 } // sp

@@ -20,8 +20,9 @@ public:
 
 private:
     void write_vertical_space(unsigned int);
+    void write_horizontal_space(unsigned int);
     void write_credentials(unsigned int);
-    void wipe_line();
+    void wipe_line(unsigned int);
     void write_start(bool const);
     void write_end();
 

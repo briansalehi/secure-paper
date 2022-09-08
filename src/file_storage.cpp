@@ -45,7 +45,7 @@ void file_storage::write(printing_type type, unsigned int position)
         break;
         case printing_type::wipe:
         {
-            wipe_line();
+            wipe_line(position);
         }
         break;
     }
@@ -61,12 +61,26 @@ void file_storage::write_batch(unsigned int position)
     }
 }
 
-void file_storage::write_vertical_space(unsigned int index)
+void file_storage::write_horizontal_space(unsigned int index)
 {
-    unsigned int position = --index * line_spacing * 1.5;
+    unsigned int digit_count = std::to_string(index).length() * 10;
 
     if (index > 0)
-        buffer << "\n" << std::string(8, ' ') << R"(\vspace*{)" << position << "pt}";
+    {
+        buffer << "\n" << std::string(8, ' ');
+        buffer << R"(\hspace*{)" << digit_count << R"(pt})";
+    }
+}
+
+void file_storage::write_vertical_space(unsigned int index)
+{
+    unsigned int position = --index * line_spacing * 1.4;
+
+    if (index > 0)
+    {
+        buffer << "\n" << std::string(8, ' ');
+        buffer << R"(\vspace*{)" << position << "pt}";
+    }
 }
 
 void file_storage::write_start(bool const page_numbering)
@@ -107,10 +121,9 @@ void file_storage::write_end()
 \end{document})" << std::endl;
 }
 
-void file_storage::wipe_line()
+void file_storage::wipe_line(unsigned int index)
 {
-    buffer << "\n" << std::string(8, ' ');
-    buffer << R"(-. )";
+    write_horizontal_space(index);
     buffer << R"(\leavevmode\xleaders\hbox{\blackbox}\hfill\kern0pt)";
 }
 

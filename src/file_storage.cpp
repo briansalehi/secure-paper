@@ -7,7 +7,9 @@ file_storage::file_storage(std::filesystem::path const& storage_path, unsigned i
     line_spacing{12},
     buffer{}
 {
-    this->storage_path.replace_extension("tex");
+    if (!this->storage_path.empty())
+        this->storage_path.replace_extension("tex");
+
     storage_file.open(this->storage_path, std::ios::out|std::ios::trunc);
 
     if (!storage_file.is_open())
@@ -64,7 +66,7 @@ void file_storage::write_vertical_space(unsigned int index)
     unsigned int position = --index * line_spacing * 1.5;
 
     if (index > 0)
-        buffer << "\n" << std::string(8, ' ') << R"(\vspace*{)" << position << "pt}\n";
+        buffer << "\n" << std::string(8, ' ') << R"(\vspace*{)" << position << "pt}";
 }
 
 void file_storage::write_start(bool const page_numbering)

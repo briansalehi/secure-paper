@@ -74,9 +74,8 @@ void file_storage::write_start(bool const page_numbering)
     buffer << R"(\documentclass[a4paper,oneside,)";
     buffer << line_spacing << R"(pt]{article})" << "\n";
     buffer << R"(
-\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{setspace}
-\usepackage{xparse}
 \onehalfspacing
 
 \newcommand{\dashfill}{%
@@ -86,6 +85,8 @@ void file_storage::write_start(bool const page_numbering)
 \NewDocumentCommand{\passphrase}{mv}{%
     \texttt{#1}~\dashfill~\texttt{#2}%
 }
+
+\newcommand{\blackbox}[0]{\colorbox{Black}{X}}
 
 \begin{document})";
 
@@ -108,7 +109,9 @@ void file_storage::write_end()
 
 void file_storage::wipe_line()
 {
-    buffer << "\n" << std::string(8, ' ') << R"(\leavevmode\xleaders\hbox{█}\hfill\kern0pt )";
+    buffer << "\n" << std::string(8, ' ');
+    buffer << R"(-. )";
+    buffer << R"(\leavevmode\xleaders\hbox{\blackbox}\hfill\kern0pt)";
 }
 
 void file_storage::write_credentials(unsigned int index)

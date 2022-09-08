@@ -21,9 +21,9 @@ public:
 private:
     void write_vertical_space(unsigned int);
     void write_credentials(unsigned int);
+    void wipe_line();
     void write_start(bool const);
     void write_end();
-    void wipe_line();
 
 private:
     std::filesystem::path storage_path;

@@ -24,9 +24,8 @@ options::options(int argc, char **argv)
         ("wipe,w", "wipe specified line")
         ("strikethrough,k", "strikethrough a password, still possible to read");
 
-    positional_options.add("output", 1);
     all_options.add(general_options).add(printing_options);
-    command_line_parser.options(all_options).positional(positional_options);
+    command_line_parser.options(all_options);
 
     // these two lines throw exceptions
     auto parsed_options = command_line_parser.run();

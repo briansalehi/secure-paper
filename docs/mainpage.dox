@@ -1,0 +1,39 @@
+///
+/// \mainpage Secure Paper Documentation
+///
+/// Secure paper is a command-line security tool for printing passphrases on paper.
+///
+/// \section introduction Introduction
+///
+/// Passphrases are security tokens used to authorize users for accessing
+/// sensitive data or granting them controlling access to their accounts.
+///
+/// These important strings should not be forgotten, otherwise it blocks
+/// users out of their accounts.\n
+/// Many methods are present for storing user credentials. Passphrase apps
+/// are one of them, but despite the fact that no digitally held
+/// passphrase storage can be safe, they are considered a secure option.
+///
+/// An alternative option is to use papers, which are technically considered
+/// the safest way of storing credentials. There are difficulties with this option though,
+/// inaccessibility from distance, to be easily destructible by water and fire, and
+/// prone to exposure if not held securely and physically accessible to unauthorized
+/// people.\n
+/// Papers are not visually encrypted and should not be, you will also lose access
+/// to the content along with unauthorized people otherwise.\n
+/// Papers should be stored in a locked drawer and inaccessible from untrusted people,
+/// and not to be held close to water or heat source.
+///
+/// With all that said, still storing passphrases on paper is the safest method.\n
+///
+/// Writing passphrases by hands can be a good options, but maintaining updates on
+/// paper and rewriting every single character by hand can be cumbersome, specially
+/// writing special characters which happen to be so common on secure passphrases.\n
+/// On the other hand, printing passphrases can be dangerious by itself due to
+/// exposure of clear text passphrases held in files to be printed by untrusted people.\n
+/// Because of that, you should be using a private printer at work or ideally at home.
+///
+/// Considering all these options, there should be a simple way of writing and wiping
+/// passphrases on paper, just by a single tool. Secure paper aims to simplify this
+/// process.
+///

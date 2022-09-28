@@ -13,4 +13,6 @@ target_include_directories(secure-paper PRIVATE include)
 target_link_libraries(secure-paper PRIVATE Boost::program_options)
 set_property(TARGET secure-paper APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${artifacts})
 
+add_custom_target(docs doxygen WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} SOURCES Doxyfile ${doc_files} COMMENT "generating html documents")
+
 install(TARGETS secure-paper)

@@ -21,7 +21,8 @@ options::options(int argc, char **argv)
              "output to be written into")
         ("storage-type,s", po::value<std::string>()->default_value("file"),
              "storage type, use -l to see list")
-        ("wipe,w", "wipe specified line");
+        ("wipe,w", "wipe specified line")
+        ("strikethrough,k", "strikethrough a password, still possible to read");
 
     positional_options.add("output", 1);
     all_options.add(general_options).add(printing_options);
@@ -70,6 +71,8 @@ void options::configure()
 
     if (variables_map.count("wipe"))
         printing_type = storage::printing_type::wipe;
+    else if (variables_map.count("strikethrough"))
+        printing_type = storage::printing_type::strikethrough;
     else
         printing_type = storage::printing_type::write;
 
@@ -95,6 +98,8 @@ bool options::ready() const
     else if (variables_map.count("position"))
         operational = true;
     else if (variables_map.count("wipe"))
+        operational = true;
+    else if (variables_map.count("strikethrough"))
         operational = true;
 
     return operational;

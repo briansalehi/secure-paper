@@ -48,6 +48,10 @@ void file_storage::write(printing_type type, unsigned int position)
             wipe_line(position);
         }
         break;
+        case printing_type::strikethrough:
+        {
+            strikethrough_line(position);
+        }
     }
 }
 
@@ -101,6 +105,7 @@ void file_storage::write_start(bool const page_numbering)
 }
 
 \newcommand{\blackbox}[0]{\colorbox{Black}{X}}
+\newcommand{\strikethrough}[0]{{-}}
 
 \begin{document})";
 
@@ -125,6 +130,12 @@ void file_storage::wipe_line(unsigned int index)
 {
     write_horizontal_space(index);
     buffer << R"(\leavevmode\xleaders\hbox{\blackbox}\hfill\kern0pt)";
+}
+
+void file_storage::strikethrough_line(unsigned int index)
+{
+    write_horizontal_space(index);
+    buffer << R"(\leavevmode\xleaders\hbox{\strikethrough}\hfill\kern0pt)";
 }
 
 void file_storage::write_credentials(unsigned int index)

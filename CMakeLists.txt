@@ -6,9 +6,11 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 file(GLOB source_files src/*)
 file(GLOB header_files include/*)
 file(GLOB doc_files docs/*)
+file(GLOB artifacts *.pdf *.log *.aux *.tex)
 
 add_executable(secure-paper ${source_files})
 target_include_directories(secure-paper PRIVATE include)
 target_link_libraries(secure-paper PRIVATE Boost::program_options)
+set_property(TARGET secure-paper APPEND PROPERTY ADDITIONAL_CLEAN_FILES ${artifacts})
 
 install(TARGETS secure-paper)

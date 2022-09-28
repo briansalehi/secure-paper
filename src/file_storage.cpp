@@ -70,10 +70,7 @@ void file_storage::write_horizontal_space(unsigned int index)
     unsigned int digit_count = std::to_string(index).length() * 10;
 
     if (index > 0)
-    {
-        buffer << "\n" << std::string(8, ' ');
-        buffer << R"(\hspace*{)" << digit_count << R"(pt})";
-    }
+        buffer << std::string(4, ' ') << R"(\hspace*{)" << digit_count << R"(pt})" << '\n';
 }
 
 void file_storage::write_vertical_space(unsigned int index)
@@ -81,66 +78,52 @@ void file_storage::write_vertical_space(unsigned int index)
     unsigned int position = --index * line_spacing * 1.4;
 
     if (index > 0)
-    {
-        buffer << "\n" << std::string(8, ' ');
-        buffer << R"(\vspace*{)" << position << "pt}";
-    }
+        buffer << std::string(4, ' ') << R"(\vspace*{)" << position << "pt}" << '\n';
 }
 
 void file_storage::write_start(bool const page_numbering)
 {
-    buffer << R"(\documentclass[a4paper,oneside,)";
-    buffer << line_spacing << R"(pt]{article})" << "\n";
-    buffer << R"(
-\usepackage[dvipsnames]{xcolor}
-\usepackage{setspace}
-\onehalfspacing
-
-\newcommand{\dashfill}{%
-    \leavevmode\xleaders\hbox{-}\hfill\kern0pt
-}
-
-\NewDocumentCommand{\passphrase}{mv}{%
-    \texttt{#1}~\dashfill~\texttt{#2}%
-}
-
-\newcommand{\blackbox}[0]{\colorbox{Black}{X}}
-\newcommand{\strikethrough}[0]{{-}}
-
-\begin{document})";
+    buffer << R"(\documentclass[a4paper,oneside,)" << line_spacing;
+    buffer << R"(pt]{article})" << '\n';
+    buffer << R"(\usepackage[dvipsnames]{xcolor})" << '\n';
+    buffer << R"(\usepackage{setspace})" << '\n';
+    buffer << R"(\onehalfspacing)" << "\n\n";
+    buffer << R"(\newcommand{\dashfill}{\leavevmode\xleaders\hbox{-}\hfill\kern0pt})" << '\n';
+    buffer << R"(\NewDocumentCommand{\passphrase}{mv}{\texttt{#1}~\dashfill~\texttt{#2}})" << '\n';
+    buffer << R"(\newcommand{\blackbox}[0]{\colorbox{Black}{X}})" << '\n';
+    buffer << R"(\newcommand{\strikethrough}[0]{{-}})" << "\n\n";
+    buffer << R"(\begin{document})" << '\n';
 
     if (page_numbering)
-        buffer << "\n" << std::string(4, ' ') << R"(\pagenumbering{arabic})";
+        buffer << R"(\pagenumbering{arabic})" << '\n';
     else
-        buffer << "\n" << std::string(4, ' ') << R"(\pagenumbering{gobble})";
+        buffer << R"(\pagenumbering{gobble})" << '\n';
 
-    buffer << R"(
-    \noindent
-    \begin{flushleft})";
+    buffer << R"(\noindent)" << '\n';
+    buffer << R"(\begin{flushleft})" << '\n';
 }
 
 void file_storage::write_end()
 {
-    buffer << R"(
-    \end{flushleft}
-\end{document})" << std::endl;
+    buffer << R"(\end{flushleft})" << '\n';
+    buffer << R"(\end{document})" << '\n';
 }
 
 void file_storage::wipe_line(unsigned int index)
 {
     write_horizontal_space(index);
-    buffer << R"(\leavevmode\xleaders\hbox{\blackbox}\hfill\kern0pt)";
+    buffer << R"(\leavevmode\xleaders\hbox{\blackbox}\hfill\kern0pt)" << '\n';
 }
 
 void file_storage::strikethrough_line(unsigned int index)
 {
     write_horizontal_space(index);
-    buffer << R"(\leavevmode\xleaders\hbox{\strikethrough}\hfill\kern0pt)";
+    buffer << R"(\leavevmode\xleaders\hbox{\strikethrough}\hfill\kern0pt)" << '\n';
 }
 
 void file_storage::write_credentials(unsigned int index)
 {
-    buffer << "\n" <<  std::string(8, ' ') << R"(\passphrase)";
+    buffer << std::string(4, ' ') << R"(\passphrase)";
     buffer << "{" << index << ". " << keys.username << "@" << keys.domain << "}";
-    buffer << "{" << keys.passphrase << R"(}\\)";
+    buffer << "{" << keys.passphrase << R"(})" << '\n';
 }

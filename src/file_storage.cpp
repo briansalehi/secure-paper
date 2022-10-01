@@ -89,7 +89,7 @@ void file_storage::write_start(bool const page_numbering)
     buffer << R"(\usepackage{setspace})" << '\n';
     buffer << R"(\onehalfspacing)" << "\n\n";
     buffer << R"(\newcommand{\dashfill}{\leavevmode\xleaders\hbox{-}\hfill\kern0pt})" << '\n';
-    buffer << R"(\NewDocumentCommand{\passphrase}{mv}{\texttt{#1}~\dashfill~\texttt{#2}})" << '\n';
+    buffer << R"(\NewDocumentCommand{\passphrase}{mv}{\texttt{#1}~\dashfill~\texttt{#2}\par})" << '\n';
     buffer << R"(\newcommand{\blackbox}[0]{\colorbox{Black}{X}})" << '\n';
     buffer << R"(\newcommand{\strikethrough}[0]{{-}})" << "\n\n";
     buffer << R"(\begin{document})" << '\n';

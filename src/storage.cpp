@@ -4,7 +4,7 @@ using namespace sp;
 
 bool storage::request_credentials()
 {
-    std::cout << "Usagename: ";
+    std::cout << "Username: ";
     std::cin >> keys.username;
     if (keys.username.empty())
     {

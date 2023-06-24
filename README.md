@@ -1,14 +1,14 @@
 # Secure Paper
 
-Print your passphrases on paper once at a time.  
-Each passphrase would be printed in a lower position relative
-to its previous passphrase on paper, so that the same paper
-can be used to add new passphrases.
+Print a list of your passphrases on paper once at a time.  
+
+Each passphrase would be printed in a lower position relative to its previous passphrase on paper, so that the same paper can be used to add new passphrases.
+
+Passphrases can also be printed in a ciphered format.
 
 ## Prerequisites
 
-Following packages are required in order to make this script
-work:
+Following packages are required in order to make this script work:
 
 ### Arch Linux
 
@@ -44,13 +44,11 @@ cmake --install secure-paper-build --prefix $HOME/.local
 
 ## Usage
 
-secure-paper can be used in different ways, but the simplest form of
-its usage is to only call it.
+secure-paper can be used in different ways, but the simplest form of its usage is to only call it.
 
 ### Write to File
 
-Run secure-paper executable to enter into an interactive environment
-and then type your new passphrases, either by long options or short:
+Run secure-paper executable to enter into an interactive environment and then type your new passphrases, either by long options or short:
 
 ```sh
 secure-paper --position 4 --output output.txt
@@ -58,20 +56,17 @@ secure-paper -p 4 -o output.txt
 secure-paper -p 4 output.txt
 ```
 
-Interactively, you will be asked for different questions which cannot
-be passed to the program as arguments for security reasons:
+Interactively, you will be asked for different questions which cannot be passed to the program as arguments for security reasons:
 
 * Domain
 * Username
 * Passphrase
 
-These questions are required in order to print your credentials on
-paper.
+These questions are required in order to print your credentials on paper.
 
 Results would be saved into the output, you can then print it later.
 
-The output option can be omitted and its value can be independently
-given to program.
+The output option can be omitted and its value can be independently given to program.
 
 ### Write to Network (not implemented yet)
 
@@ -85,8 +80,7 @@ secure-paper -p 4 -t network -o 192.168.1.23:515
 secure-paper -p 4 -t network 192.168.1.23:515
 ```
 
-The output option can be omitted and its value can be independently
-given to program.
+The output option can be omitted and its value can be independently given to program.
 
 ## License
 
